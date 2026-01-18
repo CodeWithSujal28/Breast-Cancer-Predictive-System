@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Breast Cancer Prediction Web App by Sujal Mondal 🧑‍💻</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+
+<!-- Theme Toggle -->
+<div class="theme-toggle" onclick="toggleTheme()">🌙</div>
+
+<div class="app">
+    <h1>🩺 Breast Cancer Prediction Web App by Sujal Mondal 🧑‍💻</h1>
+    <p class="subtitle">
+        Enter tumor details to predict if it is
+        <span class="benign">🟢 Benign</span> or
+        <span class="malignant">🔴 Malignant</span>
+    </p>
+
+    <form method="POST">
+        {% for feature in feature_names %}
+        <div class="field">
+            <label>📌 {{ feature.replace('_', ' ').title() }}</label>
+            <input type="number" step="any" name="{{ feature }}" required>
+        </div>
+        {% endfor %}
+
+        <button class="predict-btn" type="submit">🔍 Predict</button>
+        <button class="reset-btn" type="button" onclick="window.location.href='/'">
+            🔄 New Prediction
+        </button>
+    </form>
+
+    {% if prediction %}
+    <div class="result {% if 'Malignant' in prediction %}danger{% else %}safe{% endif %}">
+        🧪 Result: <b>{{ prediction }}</b>
+    </div>
+    {% endif %}
+</div>
+
+<script>
+function toggleTheme() {
+    document.body.classList.toggle("dark");
+    localStorage.setItem(
+        "theme",
+        document.body.classList.contains("dark") ? "dark" : "light"
+    );
+}
+
+if (localStorage.getItem("theme") === "dark") {
+    document.body.classList.add("dark");
+}
+</script>
+
+</body>
+</html>
